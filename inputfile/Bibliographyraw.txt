@@ -1,0 +1,6 @@
+[25]	J. Hu, L. Shen, S. Albanie, G. Sun, and A. Vedaldi, “Gather-Excite: Exploiting Feature Context in Convolutional Neural Networks.” arXiv, Jan. 12, 2019. doi: 10.48550/arXiv.1810.12348.
+[26]	X. Wang, R. Girshick, A. Gupta, and K. He, “Non-local Neural Networks.” arXiv, Apr. 13, 2018. doi: 10.48550/arXiv.1711.07971.
+[27]	S. Woo, J. Park, J.-Y. Lee, and I. S. Kweon, “CBAM: Convolutional Block Attention Module.” arXiv, Jul. 18, 2018. doi: 10.48550/arXiv.1807.06521.
+[28]	X. Yao, T. Huang, C. Wu, R. Zhang, and L. Sun, “Towards Faster and Better Federated Learning: A Feature Fusion Approach,” in 2019 IEEE International Conference on Image Processing (ICIP), Sep. 2019, pp. 175–179. doi: 10.1109/ICIP.2019.8803001.
+[29]	G. Yue et al., “Specificity-aware Federated Learning with Dynamic Feature Fusion Network for Imbalanced Medical Image Classification,” IEEE J. Biomed. Health Inform., vol. PP, Sep. 2023, doi: 10.1109/JBHI.2023.3319516.
+[30]	H. B. McMahan, E. Moore, D. Ramage, S. Hampson, and B. A. y Arcas, “Communication-Efficient Learning of Deep Networks from Decentralized Data.” arXiv, Jan. 26, 2023. Accessed: Apr. 17, 2023. [Online]. Available: http://arxiv.org/abs/1602.05629
