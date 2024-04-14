@@ -1,6 +1,6 @@
 
 # get bibtex from crossref and google scholar
-
+Switch to [Chinese](README_CN.md)
 ## Introduction
 This is a simple python script to get bibtex from crossref and google scholar. It is useful when you want to get bibtex for a list of DOIs or titles.
 
