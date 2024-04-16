@@ -92,5 +92,54 @@ os.environ["https_proxy"]="127.0.0.1:7890"
 get_bibtex() 去掉s就可以了 
 ```
 
+## 2024.4.16更新
+
+1、添加了DBLP 接口
+
+```python
+from apiModels.get_bibtex_from_dblp import GetBibTexFromDBLP
+```
+
+2、提高使用便捷性
+
+```python
+现在提供一个封装好的类提供使用，这个方法已经封装好了Crosref和DBLP的API
+from apiModels.workflow.crossref2dblp import Crossref2Dblp
+
+使用方法
+crossref2dblp = Crossref2Dblp("your email", "inputfile/Bibliographyraw.txt", "outputfile/Bibliography.txt")
+crossref2dblp.running()
+坐等运行完成
+
+也可以编写api，例如，如果你有了google
+scholar
+API
+from apiModels.workflow.crossref2dblp import Crossref2Dblp
+from apiModels.get_bibtex_from_google_scholar import GetBibTexFromGoogleScholar
+
+get_bibtex_from_google_scholar = GetBibTexFromGoogleScholar(
+    api_key="cbb23f2e312f9f3e3ea272c4903781db4540cb36afee4063b4ad8df3421edee7")
+在最后面参数加上你封装的API
+crossref2dblp = Crossref2Dblp("1536727925@qq.com", "inputfile/Bibliographyraw.txt", "outputfile/Bibliography.txt",
+                              get_bibtex_from_google_scholar)
+crossref2dblp.running()
+坐等运行完成
+
+或者你想自己定义api之间的调用顺序
+from apiModels.workflow.make_workflow import MakeWorkflow
+from apiModels.get_bibtex_from_google_scholar import GetBibTexFromGoogleScholar
+from apiModels.get_bibtex_from_crossref import GetBibTex
+
+get_bibtex_from_google_scholar = GetBibTexFromGoogleScholar(
+    api_key="cbb23f2e312f9f3e3ea272c4903781db4540cb36afee4063b4ad8df3421edee7")
+get_bibtex_from_crossref = GetBibTex("1536727925@qq.com")
+make_workflow = MakeWorkflow("inputfile/Bibliographyraw.txt", "outputfile/Bibliography.txt",
+                             get_bibtex_from_google_scholar, get_bibtex_from_crossref)
+make_workflow.running()
+
+使用之前: pip install get_bibtex = 1.1.0
+```
+
+
 欢迎改进
 

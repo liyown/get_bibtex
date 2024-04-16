@@ -4,8 +4,10 @@ import requests
 from serpapi import GoogleSearch
 from tqdm import tqdm
 
+from apiModels.meta_class import AbstractGetBibTex
 
-class GetBibTexFromGoogleScholar:
+
+class GetBibTexFromGoogleScholar(AbstractGetBibTex):
     """
     Get BibTex from citation strings using the Google Scholar API
     Done by: liuyaowen
@@ -98,3 +100,12 @@ class GetBibTexFromGoogleScholar:
             if result_ in query_ and len(result_) > 10:
                 return result["result_id"]
             return False
+
+    def isready(self):
+        """
+        :return: True if the API is available
+        """
+        try:
+            self.__get_result_id("test")
+        except Exception as e:
+            raise ConnectionError("Google Scholar API not available")

@@ -3,12 +3,14 @@ import re
 from gradio_client import Client
 from tqdm import tqdm
 
+from apiModels.meta_class import AbstractGetBibTex
 
-class GetBibTexFromDBLP:
+
+class GetBibTexFromDBLP(AbstractGetBibTex):
     def __init__(self):
         self.client = Client("https://yuchenlin-rebiber.hf.space/")
 
-    def get_bibtex(self, citation):
+    def get_bibtex(self, citation: str) -> str or bool:
         raw_bibtex = self.__pack_title2bibtex(citation)
         result = self.client.predict(
             raw_bibtex,  # str  in 'Input BIB' Textbox component
@@ -22,7 +24,7 @@ class GetBibTexFromDBLP:
             return result[0]
         return False
 
-    def get_bibtexs(self, citations):
+    def get_bibtexs(self, citations: list) -> tuple[list[str], list[str]]:
         bibtexs = []
         failed_citations = []
         for citation in tqdm(citations, desc="Getting BibTex from DBLP"):
@@ -33,11 +35,18 @@ class GetBibTexFromDBLP:
                 failed_citations.append(citation)
         return bibtexs, failed_citations
 
-    def __pack_title2bibtex(self, title):
+    def __pack_title2bibtex(self, title: str) -> str:
         return "@article{" + title[0:5] + ",title={" + title + "}}"
 
-
-if __name__ == '__main__':
-    str = "CBAM: Convolutional Block Attention Module"
-    get_bibtex_from_dblp = GetBibTexFromDBLP()
-    print(get_bibtex_from_dblp.get_bibtex(str))
+    def isready(self):
+        try:
+            self.client.predict(
+                "@article{test,title={test}}",  # str  in 'Input BIB' Textbox component
+                True,  # bool  in 'Abbreviation' Checkbox component
+                "url",  # List[str]  in 'Remove Keys' Checkboxgroup component
+                True,  # bool  in 'Deduplicate entries.' Checkbox component
+                True,  # bool  in 'Sort alphabetically by ID.' Checkbox component
+                api_name="/process"
+            )
+        except Exception as e:
+            raise ConnectionError("DBLP API not available")

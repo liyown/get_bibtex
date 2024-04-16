@@ -28,7 +28,7 @@ setup(
 
     # 如果上传时出现ERROR：The user '' isn't allowed to upload to project ''，换个名字，长一点无所谓，不能跟别人重复
     name="get_bibtex",
-    version="1.0.1",
+    version="1.1.0",
     author="Yaowen Liu",
     author_email="153672925@qq.com",
     description="This is a project to get bibtex from CrossRef and Google Scholar",
