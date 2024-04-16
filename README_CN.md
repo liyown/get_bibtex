@@ -118,7 +118,7 @@ from apiModels.workflow.crossref2dblp import Crossref2Dblp
 from apiModels.get_bibtex_from_google_scholar import GetBibTexFromGoogleScholar
 
 get_bibtex_from_google_scholar = GetBibTexFromGoogleScholar(
-    api_key="cbb23f2e312f9f3e3ea272c4903781db4540cb36afee4063b4ad8df3421edee7")
+    api_key="your api key")
 在最后面参数加上你封装的API
 crossref2dblp = Crossref2Dblp("1536727925@qq.com", "inputfile/Bibliographyraw.txt", "outputfile/Bibliography.txt",
                               get_bibtex_from_google_scholar)
@@ -131,7 +131,7 @@ from apiModels.get_bibtex_from_google_scholar import GetBibTexFromGoogleScholar
 from apiModels.get_bibtex_from_crossref import GetBibTex
 
 get_bibtex_from_google_scholar = GetBibTexFromGoogleScholar(
-    api_key="cbb23f2e312f9f3e3ea272c4903781db4540cb36afee4063b4ad8df3421edee7")
+    api_key="your api key")
 get_bibtex_from_crossref = GetBibTex("1536727925@qq.com")
 make_workflow = MakeWorkflow("inputfile/Bibliographyraw.txt", "outputfile/Bibliography.txt",
                              get_bibtex_from_google_scholar, get_bibtex_from_crossref)
