@@ -3,9 +3,16 @@ import re
 from tqdm import tqdm
 
 
-def verify_bibtex(bibtexs, raws):
+def verify_bibtex(bibtexs: list, raws: str):
+    """
+    verify bibtexs whether all in raws
+    :param bibtexs: List of output bibtex
+    :param raws: str for all citation, you can use f.read to get it
+    :return: the citation not in raws, means the bibtex is wrong
+        but it is less likely to happen, "get_bibtex_...“ has been verified
+    """
+    res = []
     for bibtex in tqdm(bibtexs):
-
         if bibtex.strip() == "":
             continue
         result = re.search(r"title={.*?}", bibtex).group(0)
@@ -15,4 +22,5 @@ def verify_bibtex(bibtexs, raws):
         try:
             aa = re.search(title.lower(), raws.lower()).group()
         except AttributeError:
-            print(title)
+            res.append(title)
+    return res

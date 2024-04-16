@@ -2,8 +2,10 @@ import requests
 from requests.adapters import HTTPAdapter
 from tqdm import tqdm
 
+from apiModels.meta_class import AbstractGetBibTex
 
-class GetBibTex:
+
+class GetBibTex(AbstractGetBibTex):
     """
     Get BibTex from citation strings using the Google Scholar API
     Done by: liuyaowen
@@ -69,6 +71,11 @@ class GetBibTex:
                 failed_citations.append(citation)
         return bibtexs, failed_citations
 
-
-
-
+    def isready(self):
+        """
+        :return:  True if the API is available
+        """
+        try:
+            self.session.get(self.api_url, headers=self.headers, params=self.params)
+        except Exception as e:
+            raise ConnectionError("Crossref API not available")
