@@ -4,7 +4,8 @@ __pycache__/
 *$py.class
 
 test/main.py
-
+test/outputfile/
+test/codespace.py
 # C extensions
 *.so
 

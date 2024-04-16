@@ -61,9 +61,9 @@ class GetBibTex:
         assert isinstance(citations, list)
         bibtexs = []
         failed_citations = []
-        for citation in tqdm(citations):
+        for citation in tqdm(citations, desc="Getting BibTex from CrossRef"):
             bibtex = self.get_bibtex(citation)
-            if bibtex:
+            if bibtex is not False:
                 bibtexs.append(bibtex)
             else:
                 failed_citations.append(citation)
@@ -72,6 +72,3 @@ class GetBibTex:
 
 
 
-
-if __name__ == '__main__':
-    var = list["https://doi.org/10.1016/j.joi.2021.102579"]

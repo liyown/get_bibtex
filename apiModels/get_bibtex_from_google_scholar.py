@@ -1,7 +1,8 @@
+from typing import Tuple, List
+
 import requests
 from serpapi import GoogleSearch
 from tqdm import tqdm
-from typing import Tuple, List, Any, Union
 
 
 class GetBibTexFromGoogleScholar:
@@ -65,9 +66,9 @@ class GetBibTexFromGoogleScholar:
         """
         bibtexs = []
         snippets = []
-        for citation in tqdm(citations):
+        for citation in tqdm(citations, desc="Getting BibTex from Google Scholar"):
             bibtex = self.get_bibtex(citation)
-            if bibtex:
+            if bibtex is not False:
                 bibtexs.append(bibtex)
             else:
                 snippets.append(citation)
