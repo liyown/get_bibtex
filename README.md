@@ -9,6 +9,7 @@ This is a simple python script to get bibtex from crossref and google scholar. I
 - re // for regular expression
 - serpapi // for google scholar
 - tqdm // for progress bar
+- python >=3.8
 
 ## Usage
 
