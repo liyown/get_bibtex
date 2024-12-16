@@ -1,0 +1,66 @@
+[tool.poetry]
+name = "get_bibtex"
+version = "1.1.0"
+description = "This is a project to get bibtex from CrossRef and Google Scholar"
+authors = ["Yaowen Liu <153672925@qq.com>"]
+readme = "README.md"
+packages = [{include = "apiModels"}]
+license = "MIT"
+homepage = "https://github.com/UnderTurrets/get_bibtex"
+repository = "https://github.com/UnderTurrets/get_bibtex"
+keywords = ["bibtex", "crossref", "google-scholar", "citation"]
+classifiers = [
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Intended Audience :: Education",
+    "Natural Language :: English",
+    "Natural Language :: Chinese (Simplified)",
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+requests = "^2.31.0"
+tqdm = "^4.66.4"
+gradio = "*"
+google-search-results = "^2.4.2"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.0"
+black = "^23.0"
+isort = "^5.12"
+flake8 = "^6.0"
+pytest-cov = "^4.1.0"
+pytest-mock = "^3.12.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/UnderTurrets/get_bibtex/issues"
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+multi-line-output = 3
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --cov=apiModels --cov-report=term-missing"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::UserWarning",
+]
+
+[tool.poetry.scripts]
+test = "pytest:main"
+test-cov = "pytest:main --cov=apiModels --cov-report=term-missing"
+test-html = "pytest:main --cov=apiModels --cov-report=html"
