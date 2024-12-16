@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "get_bibtex"
-version = "1.1.0"
+version = "2.0.0"
 description = "This is a project to get bibtex from CrossRef and Google Scholar"
 authors = ["Yaowen Liu <153672925@qq.com>"]
 readme = "README.md"
