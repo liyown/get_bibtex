@@ -119,8 +119,7 @@ def example_file_processing():
     示例5：文件处理
     """
     print("\n=== File Processing Example ===")
-    print("=== 文件处理示例 ===\n")
-    
+
     # Create workflow
     # 创建工作流
     workflow = WorkflowBuilder()
@@ -129,13 +128,11 @@ def example_file_processing():
     
     # Process file
     # 处理文件
-    input_file = "D:\\Workspace\\PYTHON\\get_bibtex\\test\\inputfile\\Bibliographyraw.txt"  # One query per line 每行一个查询
+    input_file = "test\inputfile\Bibliographyraw.txt"  # One query per line 每行一个查询
     output_file = "references.bib"
     
     print(f"Processing file: {input_file}")
-    print(f"处理文件：{input_file}")
     print(f"Output to: {output_file}")
-    print(f"输出到：{output_file}")
     
     try:
         workflow.process_file(input_file, output_file)
@@ -155,10 +152,10 @@ def main():
     print("BibTeX 获取示例")
     print("=" * 50)
     
-    example_crossref()
-    example_dblp()
-    example_google_scholar()
-    example_workflow()
+    # example_crossref()
+    # example_dblp()
+    # example_google_scholar()
+    # example_workflow()
     example_file_processing()
 
 if __name__ == "__main__":

@@ -1,5 +1,3 @@
-FedMSA: A Model Selection and Adaptation System for Federated Learning
-Attention Is All You Need
-Non-Local Neural Networks
-ECA-Net: Efficient Channel Attention for Deep Convolutional Neural Networks
-CBAM: Convolutional Block Attention Module
+Image-embodied knowledge representation learning
+Structure Aware Negative Sampling in Knowledge Graphs
+NSCaching: simple and efficient negative sampling for knowledge graph embedding
