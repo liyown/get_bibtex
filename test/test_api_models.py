@@ -1,3 +1,5 @@
+from unittest.mock import MagicMock
+
 import pytest
 from apiModels import (
     CrossRefBibTeX,
@@ -97,6 +99,52 @@ class TestDBLPBibTeX:
 class TestGoogleScholarBibTeX:
     def test_initialization(self, google_scholar_fetcher):
         assert google_scholar_fetcher.api_key == TEST_SERPAPI_KEY
+
+
+    def test_fetch_scholar_bibtex(self, google_scholar_fetcher, monkeypatch):
+        fake_cite_search = MagicMock()
+        fake_cite_search.get_dict.return_value = {
+            "links": [
+                {"name": "MLA", "link": "https://example.com/mla"},
+                {"name": "BibTeX", "link": "https://example.com/bib"}
+            ]
+        }
+
+        monkeypatch.setattr("apiModels.get_bibtex_from_google_scholar.GoogleSearch", lambda *_: fake_cite_search)
+
+        class _Resp:
+            def __enter__(self):
+                return self
+
+            def __exit__(self, exc_type, exc, tb):
+                return False
+
+            def read(self):
+                return b"@article{li2011performance,\n  title={x}\n}"
+
+        monkeypatch.setattr("apiModels.get_bibtex_from_google_scholar.urlopen", lambda *_args, **_kwargs: _Resp())
+
+        bibtex = google_scholar_fetcher._fetch_scholar_bibtex({"result_id": "abc"})
+        assert bibtex.startswith("@article{li2011performance")
+
+    def test_generate_citation_key(self, google_scholar_fetcher):
+        key = google_scholar_fetcher._generate_citation_key(
+            authors=["Li S", "Yang B", "Hu J"],
+            year="2011",
+            title="Performance comparison of different multi-resolution transforms for image fusion"
+        )
+        assert key == "li2011performance"
+
+    def test_get_bibtex_prefers_scholar_bibtex(self, google_scholar_fetcher, monkeypatch):
+        monkeypatch.setattr(
+            google_scholar_fetcher,
+            "_search_first_paper",
+            lambda _query: {"result_id": "abc", "title": "T"}
+        )
+        monkeypatch.setattr(google_scholar_fetcher, "_fetch_scholar_bibtex", lambda _paper: "@article{li2011performance,}")
+
+        bibtex = google_scholar_fetcher.get_bibtex("dummy")
+        assert bibtex == "@article{li2011performance,}"
 
     def test_get_bibtex(self, google_scholar_fetcher):
         try:
