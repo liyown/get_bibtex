@@ -146,6 +146,35 @@ class TestGoogleScholarBibTeX:
         bibtex = google_scholar_fetcher.get_bibtex("dummy")
         assert bibtex == "@article{li2011performance,}"
 
+    def test_fetch_scholar_bibtex_url_error_falls_back(self, google_scholar_fetcher, monkeypatch):
+        """When urlopen raises, _fetch_scholar_bibtex returns None so fallback is used."""
+        fake_cite_search = MagicMock()
+        fake_cite_search.get_dict.return_value = {
+            "links": [{"name": "BibTeX", "link": "https://example.com/bib"}]
+        }
+        monkeypatch.setattr("apiModels.get_bibtex_from_google_scholar.GoogleSearch", lambda *_: fake_cite_search)
+        monkeypatch.setattr(
+            "apiModels.get_bibtex_from_google_scholar.urlopen",
+            lambda *_args, **_kwargs: (_ for _ in ()).throw(OSError("network error"))
+        )
+
+        result = google_scholar_fetcher._fetch_scholar_bibtex({"result_id": "abc"})
+        assert result is None
+
+    def test_get_bibtex_falls_back_when_url_fetch_fails(self, google_scholar_fetcher, monkeypatch):
+        """get_bibtex uses _build_fallback_bibtex when _fetch_scholar_bibtex returns None due to URL error."""
+        paper = {
+            "result_id": "abc",
+            "title": "Test Paper",
+            "publication_info": {"summary": "Smith J - Journal of Testing, 2020"},
+        }
+        monkeypatch.setattr(google_scholar_fetcher, "_search_first_paper", lambda _q: paper)
+        monkeypatch.setattr(google_scholar_fetcher, "_fetch_scholar_bibtex", lambda _p: None)
+
+        bibtex = google_scholar_fetcher.get_bibtex("dummy")
+        assert bibtex is not None
+        assert "@" in bibtex
+
     def test_get_bibtex(self, google_scholar_fetcher):
         try:
             bibtex = google_scholar_fetcher.get_bibtex(TEST_TITLE)
