@@ -1,5 +1,6 @@
 import re
 from typing import Dict, List, Optional
+from urllib.error import URLError
 from urllib.request import urlopen
 
 from serpapi import GoogleSearch
@@ -85,8 +86,12 @@ class GoogleScholarBibTeX(BibTexFetcher):
         if not bibtex_url:
             return None
 
-        with urlopen(bibtex_url, timeout=20) as response:
-            data = response.read().decode("utf-8", errors="replace").strip()
+        try:
+            with urlopen(bibtex_url, timeout=20) as response:
+                data = response.read().decode("utf-8", errors="replace").strip()
+        except (URLError, OSError) as e:
+            self.logger.warning("Failed to download BibTeX from %s: %s", bibtex_url, e)
+            return None
 
         return data or None
 
@@ -169,7 +174,7 @@ class GoogleScholarBibTeX(BibTexFetcher):
 
     def _generate_citation_key(self, authors: List[str], year: Optional[str], title: str) -> str:
         """Generate key as `lastname + year + first title word` when possible."""
-        first_author_lastname = authors[0].split()[-1] if authors else "unknown"
+        first_author_lastname = authors[0].split()[0] if authors else "unknown"
         normalized_title = re.sub(r"[^a-zA-Z0-9\s]", " ", title.lower())
         title_words = [word for word in normalized_title.split() if word]
         first_title_word = title_words[0] if title_words else ""
