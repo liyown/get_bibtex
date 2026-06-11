@@ -2,6 +2,7 @@ from unittest.mock import MagicMock
 
 import pytest
 from apiModels import (
+    BibTexFetcher,
     CrossRefBibTeX,
     DBLPBibTeX,
     GoogleScholarBibTeX,
@@ -202,6 +203,32 @@ class TestWorkflowBuilder:
         assert output_file.exists()
         content = output_file.read_text(encoding='utf-8')
         assert '@' in content
+
+    def test_process_file_preserves_duplicate_queries(self, tmp_path):
+        class DummyFetcher(BibTexFetcher):
+            def get_bibtex(self, query):
+                return f"@article{{{query.replace(' ', '_')}}}"
+
+            def get_multiple_bibtex(self, queries):
+                return {query: self.get_bibtex(query) for query in queries}
+
+        workflow = WorkflowBuilder()
+        workflow.add_fetcher(DummyFetcher())
+
+        duplicate_query = "Repeated Paper"
+        input_file = tmp_path / "duplicate_input.txt"
+        input_file.write_text(
+            f"{duplicate_query}\n{duplicate_query}\n",
+            encoding='utf-8'
+        )
+        output_file = tmp_path / "duplicate_output.bib"
+
+        success = workflow.process_file(str(input_file), str(output_file))
+
+        assert success
+        content = output_file.read_text(encoding='utf-8')
+        assert content.count(f"% Query: {duplicate_query}") == 2
+        assert content.count("% Source: DummyFetcher") == 2
 
     def test_get_statistics(self, workflow):
         stats = workflow.get_statistics()

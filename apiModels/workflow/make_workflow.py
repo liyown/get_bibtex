@@ -136,7 +136,8 @@ class WorkflowBuilder:
             output_file.parent.mkdir(parents=True, exist_ok=True)
             
             with open(output_file, 'w', encoding='utf-8') as f:
-                for query, fetcher_results in results.items():
+                for query in queries:
+                    fetcher_results = results.get(query, {})
                     f.write(f"% Query: {query}\n")
                     if not fetcher_results:
                         f.write("% No citations found\n\n")
@@ -148,7 +149,7 @@ class WorkflowBuilder:
 
             # Log statistics
             total = len(queries)
-            found = sum(1 for r in results.values() if r)
+            found = sum(1 for query in queries if results.get(query))
             self.logger.info(f"Processed {total} queries, found {found} citations")
             
             return True
